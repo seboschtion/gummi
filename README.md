@@ -12,12 +12,9 @@ Some more things you can do:
 - `ldm reset` resets your document by removing the template and disconnecting ldm from it.
 
 ## Build
-1. Create a virtual environment: `python3 -m venv ldm`
-2. Clone the repository into a temporary folder: `git clone git@github.com:seboschtion/latex-docs-manager.git temp`
-3. Run `mv temp/* ldm && mv temp/.* ldm && rmdir temp`
-4. `cd` into `ldm`
-5. `source bin/activate`
-6. Run `pip install -r requirements.txt`
-7. Run `make`
-8. The binary can be found under `dist/ldm`. Move it where you want ;-)
-
+1. After cloning the repository, `cd` into it
+2. Create the virtual environment: `python3 -m venv .`
+3. Run `source bin/activate`
+4. Run `pip install -r requirements.txt` to install the requirements
+5. Run `make`
+6. The binary can be found under `dist/gummi`. Move it where you want ;-)
