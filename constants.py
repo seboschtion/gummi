@@ -1,0 +1,9 @@
+PROGRAM_NAME = 'LDM'
+PROGRAM_VERSION = '0.1'
+
+CONFIG_FILENAME = '.ldm.json'
+LDM_FOLDER = '.ldm'
+LDM_TEMPLATE_FOLDER = 'ldm'
+
+BUILD_PATH = 'build'
+
