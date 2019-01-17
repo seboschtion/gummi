@@ -5,7 +5,7 @@ from gummi.config import Config
 
 def remove_dotpath(path):
     config = Config()
-    dotpath = os.path.join(constants.LDM_FOLDER, config.get_source_name(), constants.LDM_TEMPLATE_FOLDER)
+    dotpath = os.path.join(constants.MANAGED_FOLDER, config.get_source_name(), constants.TEMPLATE_FOLDER)
     path = path.replace(dotpath, '')
     if path.find('/') == 0:
         path = path[1:]

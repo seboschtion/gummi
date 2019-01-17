@@ -11,7 +11,7 @@ class Init:
 
     def run(self, source=None):
         if self.config.exists():
-            print("This document already is managed by ldm.")
+            print(f"This document already is managed by {constants.PROGRAM_NAME}.")
             return
         if not self.create_config(source):
             print("Error creating config.")
@@ -45,10 +45,10 @@ class Init:
         return url[last_slash_index + 1:last_dot_index]
 
     def clone_repo(self):
-        ldm_folder = os.path.join(os.getcwd(), constants.LDM_FOLDER)
-        os.mkdir(ldm_folder)
+        managed_folder = os.path.join(os.getcwd(), constants.MANAGED_FOLDER)
+        os.mkdir(managed_folder)
         try:
-            git.Git(ldm_folder).clone(self.config.get_source_url())
+            git.Git(managed_folder).clone(self.config.get_source_url())
         except git.exc.GitError as e:
             print(e)
             return False

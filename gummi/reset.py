@@ -13,7 +13,7 @@ class Reset:
     def run(self):
         self.delete_managed_files()
         try:
-            shutil.rmtree(constants.LDM_FOLDER)
+            shutil.rmtree(constants.MANAGED_FOLDER)
         except IOError:
             pass
         try:
@@ -26,7 +26,7 @@ class Reset:
         config = self.config.get_source_name()
         if not config:
             return
-        path = os.path.join(constants.LDM_FOLDER, config, constants.LDM_TEMPLATE_FOLDER)
+        path = os.path.join(constants.MANAGED_FOLDER, config, constants.TEMPLATE_FOLDER)
         files = list(Path(path).rglob('*'))
         if not files:
             return

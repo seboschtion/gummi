@@ -5,13 +5,13 @@ import constants
 from gummi.util import remove_dotpath
 from gummi.config import Config
 from gummi.check import Check
-from gummi.ldmgit import LdmGit
+from gummi.git import Git
 
 class Update:
     def __init__(self):
         self.check = Check()
         self.config = Config()
-        self.git = LdmGit()
+        self.git = Git()
         return
 
     def run(self):
@@ -33,7 +33,7 @@ class Update:
 
     def find_deleted_files(self):
         diff = self.git.diff()
-        base_path = os.path.join(constants.LDM_FOLDER, self.config.get_source_name())
+        base_path = os.path.join(constants.MANAGED_FOLDER, self.config.get_source_name())
         deleted = []
         for diff_item in diff:
             if diff_item.change_type == 'D':
@@ -43,10 +43,10 @@ class Update:
         return deleted
 
     def add_files(self):
-        path = os.path.join(constants.LDM_FOLDER, self.config.get_source_name(), constants.LDM_TEMPLATE_FOLDER)
+        path = os.path.join(constants.MANAGED_FOLDER, self.config.get_source_name(), constants.TEMPLATE_FOLDER)
         new_files = list(Path(path).rglob('*'))
         if not new_files:
-            print("Warning: There is either no `ldm` folder in the template or no files ar inisde it.")
+            print(f"Warning: There is either no `{constants.TEMPLATE_FOLDER}` folder in the template or no files ar inisde it.")
             return False
         for file in new_files:
             if os.path.isdir(file):

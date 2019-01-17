@@ -10,12 +10,12 @@ class InitTemplate:
 
     def run(self):
         if self.config.exists():
-            print("Having a template document managed by ldm is not recommended.")
+            print(f"Having a template document managed by {constants.BINARY_NAME} is not recommended.")
             return
         try:
-            os.mkdir(constants.LDM_TEMPLATE_FOLDER)
+            os.mkdir(constants.TEMPLATE_FOLDER)
         except OSError:
-            print("There was an error. Does the `ldm` folder already exist?")
+            print("There was an error. Does the `{constants.TEMPLATE_FOLDER}` folder already exist?")
             return
-        print("Done. Add your shared files into the `ldm` folder")
+        print("Done. Add your shared files into the `{constants.TEMPLATE_FOLDER}` folder")
 

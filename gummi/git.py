@@ -4,10 +4,10 @@ from git import Repo
 import constants
 from gummi.config import Config
 
-class LdmGit:
+class Git:
     def __init__(self):
         self.config = Config()
-        repo_path = os.path.join(constants.LDM_FOLDER, self.config.get_source_name())
+        repo_path = os.path.join(constants.MANAGED_FOLDER, self.config.get_source_name())
         self.repo = Repo(repo_path)
         return
 
