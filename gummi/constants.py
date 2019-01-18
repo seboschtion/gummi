@@ -4,6 +4,7 @@ PROGRAM_VERSION = '0.1'
 
 CONFIG_FILENAME = '.gummi.json'
 MANAGED_FOLDER = '.gummi'
+MANAGED_FOLDER_PACKAGES = 'packages'
 TEMPLATE_FOLDER = 'gummi'
 
 BUILD_PATH = 'build'
