@@ -1,6 +1,8 @@
+import sys
 from argparse import ArgumentParser
 
-import constants, exit_code
+import gummi.constants as constants
+import gummi.exit_code as exit_code
 from gummi.init import Init
 from gummi.detach import Detach
 

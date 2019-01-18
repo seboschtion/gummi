@@ -1,7 +1,8 @@
 import os, git
 
-import constants, exit_code
-from gummi.config.config import Config
+import gummi.constants as constants
+import gummi.exit_code as exit_code
+from gummi.config import Config
 
 class Init:
     def __init__(self):

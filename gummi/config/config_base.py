@@ -1,7 +1,7 @@
 import os
 import json
 
-import constants
+import gummi.constants as constants
 
 class ConfigBase:
     def get(self, keys):
