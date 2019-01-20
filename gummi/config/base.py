@@ -1,8 +1,6 @@
 import os, json
 
-import gummi.constants as constants
-
-class ConfigBase:
+class Base:
     def __init__(self, filename):
         self.config_file_path = os.path.join(os.getcwd(), filename)
 

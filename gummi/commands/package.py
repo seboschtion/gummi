@@ -1,21 +1,21 @@
 import os
 
-import gummi.exit_code as exit_code
-from gummi.config import PackageConfig
+import gummi
+import gummi.config
 
-class PackageAdmin():
+class Package():
     def __init__(self):
-        self.package_config = PackageConfig()
+        self.package_config = gummi.config.Package()
 
     def create(self):
         if self.package_config.exists():
             print("This folder already holds a package.")
-            return exit_code.ALREADY
-        name, main, version = self.get_package_user_info()
+            return gummi.exit_code.ALREADY
+        name, main, version = self.__get_package_user_info()
         self.package_config.create(name, main, version)
-        return exit_code.SUCCESS
+        return gummi.exit_code.SUCCESS
 
-    def get_package_user_info(self):
+    def __get_package_user_info(self):
         default_name = os.path.split(os.getcwd())[-1]
         name = input(f"Enter the name of your package [{default_name}]: ")
         if name is '': name = default_name

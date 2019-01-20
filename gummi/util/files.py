@@ -1,8 +1,8 @@
 import os, shutil
 
-import gummi.constants as constants
+import gummi
 
-class Filesystem:
+class Files:
     def init(self):
         for folder in self.managed_folders():
             os.mkdir(folder)
@@ -14,19 +14,19 @@ class Filesystem:
         return True
 
     def managed_folders(self):
-        root = constants.MANAGED_FOLDER
-        packages = os.path.join(root, constants.MANAGED_FOLDER_PACKAGES)
+        root = gummi.constants.MANAGED_FOLDER
+        packages = os.path.join(root, gummi.constants.MANAGED_FOLDER_PACKAGES)
         return [root, packages]
 
     def delete_managed_folders(self):
         try:
-            shutil.rmtree(constants.MANAGED_FOLDER)
+            shutil.rmtree(gummi.constants.MANAGED_FOLDER)
         except IOError:
             pass
 
     def delete_config(self):
         try:
-            os.remove(constants.CONFIG_FILENAME)
+            os.remove(gummi.constants.CONFIG_FILENAME)
         except OSError:
             pass
 

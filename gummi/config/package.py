@@ -1,9 +1,9 @@
-import gummi.constants as constants
-from gummi.config.config_base import ConfigBase
+import gummi
+from gummi.config import Base
 
-class PackageConfig(ConfigBase):
+class Package(Base):
     def __init__(self):
-        super().__init__(constants.PACKAGE_CONFIG_FILENAME)
+        super().__init__(gummi.constants.PACKAGE_CONFIG_FILENAME)
 
     def create(self, name, main, version):
         self.set(name, ['name'])
