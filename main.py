@@ -1,62 +1,50 @@
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 
 import gummi.constants as constants
 import gummi.exit_code as exit_code
 from gummi.init import Init
 from gummi.detach import Detach
+from gummi.package import PackageAdmin
 
 class Program:
-    def __init__(self):
-        self.create_commands()
-
     def main(self):
-        args = self.get_args()
-        if args.version:
-            self.print_version()
-            return
-        if args.help:
-            self.print_help(args.command)
-            return
-        if args.command == 'init':
-            return self.init()
-        if args.command == 'detach':
-            return self.detach()
-        else:
-            self.print_help(args.command)
-            return exit_code.COMMAND_INTERPRETATION
+        global_parser = ArgumentParser(prog=constants.BINARY_NAME, description=f"{constants.PROGRAM_NAME} - your LaTeX document management tool.")
+        global_parser.add_argument('-v', '--version', action='version', version=self.version(), help="show version information and exit")
+        cmd_parser = global_parser.add_subparsers(title='commands', dest='cmd_parser_name', help="append -h to the command to obtain more usage information")
 
-    def get_args(self):
-        self.parser = ArgumentParser(description=f"{constants.PROGRAM_NAME} - your LaTeX document management tool.", add_help=False)
-        self.parser.add_argument('command', metavar='command', type=str, nargs='?', help=', '.join(self.commands.keys()) + " (help for each command with command and applied -h)")
-        self.parser.add_argument('-h', '--help', action='store_true', help="get help")
-        self.parser.add_argument('-v', '--version', action='store_true', help="show version information")
-        return self.parser.parse_args()
+        init_parser = cmd_parser.add_parser('init', description="initialize this document for {}".format(constants.PROGRAM_NAME))
+        init_parser.add_argument('init', nargs='?', help=SUPPRESS)
+        detach_parser = cmd_parser.add_parser('detach', description="remove {} configuration files".format(constants.PROGRAM_NAME))
+        detach_parser.add_argument('detach', nargs='?', help=SUPPRESS)
+        package_parser = cmd_parser.add_parser('package', description="create and manage a custom built {} package".format(constants.PROGRAM_NAME))
+        package_parser.add_argument('package', nargs='?', help=SUPPRESS)
+        package_parsers = package_parser.add_subparsers(title='subcommands', dest='package_parser_name', help="append -h to the command to obtain more usage information")
+        package_parsers.add_parser('create', description="create a {} package".format(constants.PROGRAM_NAME))
 
-    def init(self):
-        init = Init()
-        return init.run()
+        args = global_parser.parse_args()
+        if args.cmd_parser_name == 'init': return self.init(init_parser)
+        elif args.cmd_parser_name == 'detach': return self.detach(detach_parser)
+        elif args.cmd_parser_name == 'package': return self.package(package_parser)
+        global_parser.print_help()
+        return exit_code.COMMAND_INTERPRETATION
 
-    def detach(self):
-        reset = Detach()
-        return reset.run()
+    def init(self, parser):
+        args = parser.parse_args()
+        return Init().run()
 
-    def print_version(self):
-        print(f"{constants.PROGRAM_NAME} version {constants.PROGRAM_VERSION}")
+    def detach(self, parser):
+        args = parser.parse_args()
+        return Detach().run()
 
-    def create_commands(self):
-        self.commands = {
-            'detach': "remove {} configuration files".format(constants.PROGRAM_NAME),
-            'init': "initialize this document for {}".format(constants.PROGRAM_NAME),
-        }
+    def package(self, parser):
+        args = parser.parse_args()
+        admin = PackageAdmin()
+        if args.package_parser_name == 'create':
+            return admin.create()
 
-    def print_help(self, command):
-        if command == None:
-            self.parser.print_help()
-        elif command in self.commands.keys():
-            print(f"{command}: {self.commands[command]}")
-        else:
-            print(f"Please specify a valid command. Find help by running `{constants.BINARY_NAME} -h`.")
+    def version(self):
+        return "{} version {}".format(constants.PROGRAM_NAME, constants.PROGRAM_VERSION)
 
 if __name__ == '__main__':
     try:
