@@ -4,7 +4,12 @@ Do you have a bunch of preamble files for your LaTeX documents and you reuse the
 
 With `gummi` you can do just that! You just create a git repository with your template files in it and you can use them in every LaTeX document you have!
 
-## All the commands
+## Table of contents
+1. [Commands](#commands)
+2. [Example](#example): [Create template](#create-template), [Use template](#use-the-template), [Update template](#update-the-template)
+3. [Build](#build)
+
+## Commands
 ```
 init      Initializes a LaTeX document
 check     Checks if any updates to the update are available
