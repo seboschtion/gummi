@@ -62,4 +62,5 @@ if __name__ == '__main__':
         sys.exit(program.main())
     except KeyboardInterrupt:
         print("\n\nGood bye.")
+        pass
 
