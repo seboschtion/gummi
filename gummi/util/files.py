@@ -1,32 +1,45 @@
-import os, shutil
+import os
+import shutil
+import git
 
 import gummi
 
 class Files:
-    def init(self):
-        for folder in self.managed_folders():
-            os.mkdir(folder)
+    def init_document(self):
+        try:
+            os.mkdir(gummi.constants.MANAGED_FOLDER)
+        except OSError:
+            pass
 
     def is_initialized(self):
-        for folder in self.managed_folders():
-            if not os.path.isdir(folder):
-                return False
-        return True
+        managed_folder_exists = os.path.isdir(gummi.constants.MANAGED_FOLDER)
+        if not managed_folder_exists: return False
+        repo_cloned = len(os.listdir(gummi.constants.MANAGED_FOLDER)) > 0
+        return repo_cloned
 
-    def managed_folders(self):
-        root = gummi.constants.MANAGED_FOLDER
-        packages = os.path.join(root, gummi.constants.MANAGED_FOLDER_PACKAGES)
-        return [root, packages]
-
-    def delete_managed_folders(self):
+    def delete_managed_folder(self):
         try:
             shutil.rmtree(gummi.constants.MANAGED_FOLDER)
         except IOError:
             pass
 
-    def delete_config(self):
-        try:
-            os.remove(gummi.constants.CONFIG_FILENAME)
-        except OSError:
-            pass
+    def get_repo(self):
+        return git.Repo(self.get_repo_folder())
+
+    def get_template_folder(self):
+        repo = self.get_repo_folder()
+        return os.path.join(repo, gummi.constants.TEMPLATE_FOLDER)
+
+    def relative_path(self, path):
+        dotpath = self.get_template_folder()
+        path = path.replace(dotpath, '')
+        if path.find('/') == 0:
+            path = path[1:]
+        if path == '':
+            path = '.'
+        return path
+
+    def get_repo_folder(self):
+        all_files = os.listdir(gummi.constants.MANAGED_FOLDER)
+        return os.path.join(gummi.constants.MANAGED_FOLDER, all_files[0])
 
