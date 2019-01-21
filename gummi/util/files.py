@@ -11,6 +11,14 @@ class Files:
         except OSError:
             pass
 
+    def init_template(self):
+        try:
+            os.mkdir(gummi.constants.TEMPLATE_FOLDER)
+            return True
+        except OSError:
+            pass
+        return False
+
     def is_initialized(self):
         managed_folder_exists = os.path.isdir(gummi.constants.MANAGED_FOLDER)
         if not managed_folder_exists: return False

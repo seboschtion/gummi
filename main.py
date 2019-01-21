@@ -12,6 +12,7 @@ class Program:
 
         init_parser = cmd_parser.add_parser('init', description="initialize this document for {}".format(gummi.constants.PROGRAM_NAME))
         init_parser.add_argument('init', nargs='?', help=argparse.SUPPRESS)
+        init_parser.add_argument('--template', action='store_true', help="initalize a template instead")
         detach_parser = cmd_parser.add_parser('detach', description="remove {} configuration files".format(gummi.constants.PROGRAM_NAME))
         detach_parser.add_argument('detach', nargs='?', help=argparse.SUPPRESS)
         check_parser = cmd_parser.add_parser('check', description="check for available template updates")
@@ -35,7 +36,10 @@ class Program:
 
     def init(self, parser):
         args = parser.parse_args()
-        return gummi.commands.Init().run()
+        if args.template:
+            return gummi.commands.Init().init_template()
+        else:
+            return gummi.commands.Init().init_doc()
 
     def detach(self, parser):
         args = parser.parse_args()
