@@ -4,6 +4,16 @@ Do you have a bunch of preamble files for your LaTeX documents and you reuse the
 
 With `gummi` you can do just that! You just create a git repository with your template files in it and you can use them in every LaTeX document you have!
 
+## All the commands
+```
+init      Initializes a LaTeX document
+check     Checks if any updates to the update are available
+detach    Deletes all the template files
+update    Updates the templates
+
+You can use -h on any command to get help.
+```
+
 ## Example
 A LaTeX document of yours might usually look like this:
 ```
@@ -84,16 +94,6 @@ gummi update
 in your LaTeX document. Your changes are applied immediately!
 
 The _.gummi_ folder is important, it is responsible for tracking changes to your templates.
-
-## All the commands
-```
-init      Initializes a LaTeX document
-check     Checks if any updates to the update are available
-detach    Deletes all the template files
-update    Updates the templates
-
-You can use -h on any command to get help.
-```
 
 ## Build
 1. After cloning the repository, `cd` into it
