@@ -18,8 +18,10 @@ class Update():
         if not updates_available:
             print("Your document is up-to-date. Redoing some things anyway.")
         deleted = self.__find_deleted_files()
+        updated = self.__find_updated_files()
         self.repo.remotes.origin.pull()
         self.__delete_files(deleted)
+        self.__update_files(updated)
         self.add_files()
         print("The document is now updated.")
         return gummi.exit_code.SUCCESS
@@ -40,9 +42,7 @@ class Update():
             except OSError:
                 pass
             newfile = os.path.join(destination, name)
-            if self.__check_file_has_changed(file, newfile):
-                print(f"{newfile} has changed locally and will not be updated!")
-            else:
+            if not self.__check_file_has_changed(file, newfile):
                 shutil.copy(file, destination)
         return True
 
@@ -62,6 +62,26 @@ class Update():
                     os.removedirs(path)
                 except OSError:
                     pass
+
+    def __update_files(self, files):
+        for file in files:
+            old, new = self.__get_old_and_new(file)
+            shutil.copy(new, old)
+
+    def __find_updated_files(self):
+        diff = self.check.git_diff()
+        updated = []
+        for diff_item in diff:
+            if diff_item.change_type == 'M':
+                path = diff_item.b_path
+                first_slash = path.find('/') + 1
+                updated_path = path[first_slash:]
+                old, new = self.__get_old_and_new(updated_path)
+                if self.__check_file_has_changed(old, new):
+                    print(f"{old} has changed locally and remotely. It will not be updated here.")
+                else:
+                    updated.append(updated_path)
+        return updated
 
     def __find_deleted_files(self):
         diff = self.check.git_diff()
