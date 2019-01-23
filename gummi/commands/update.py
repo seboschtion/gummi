@@ -1,6 +1,7 @@
 import os
 import shutil
 import pathlib
+import hashlib
 
 import gummi
 import gummi.util
@@ -38,8 +39,19 @@ class Update():
                 os.makedirs(destination)
             except OSError:
                 pass
-            shutil.copy(file, destination)
+            newfile = os.path.join(destination, name)
+            if self.__check_file_has_changed(file, newfile):
+                print(f"{newfile} has changed locally and will not be updated!")
+            else:
+                shutil.copy(file, destination)
         return True
+
+    def __check_file_has_changed(self, old, new):
+        if not os.path.exists(old) or not os.path.exists(new):
+            return False 
+        oldsha1 = hashlib.sha1(open(old, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
+        newsha1 = hashlib.sha1(open(new, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
+        return not oldsha1 == newsha1
 
     def __delete_files(self, files):
         for file in files:
@@ -53,11 +65,21 @@ class Update():
 
     def __find_deleted_files(self):
         diff = self.check.git_diff()
-        base_path = self.files.get_repo_folder()
         deleted = []
         for diff_item in diff:
             if diff_item.change_type == 'D':
                 path = diff_item.b_path
                 first_slash = path.find('/') + 1
-                deleted.append(path[first_slash:])
+                delete_path = path[first_slash:]
+                old, new = self.__get_old_and_new(delete_path)
+                if self.__check_file_has_changed(old, new):
+                    print(f"{old} has changed locally and deleted remotely. From now on, it is your responsibility to keep track of that file!")
+                else:
+                    deleted.append(delete_path)
         return deleted
+
+    def __get_old_and_new(self, filename):
+        old = filename
+        new = os.path.join(self.files.get_template_folder(), filename)
+        return old, new
+        
