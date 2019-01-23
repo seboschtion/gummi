@@ -96,7 +96,7 @@ If your want to update your templates, for example remove the Makefile and add a
 ```bash
 gummi update
 ```
-in your LaTeX document. Your changes are applied immediately!
+in your LaTeX document. Your changes are applied immediately! Any changes made locally to a template file will not be lost, these files do not get updated.
 
 The _.gummi_ folder is important, it is responsible for tracking changes to your templates.
 
