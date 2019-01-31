@@ -13,25 +13,36 @@ class Update():
         self.check = gummi.commands.Check()
         self.repo = self.files.get_repo()
 
-    def run(self):
+    def run(self, dry):
         updates_available = self.check.check(quiet=True)
         if not updates_available:
-            print("Your document is up-to-date. Redoing some things anyway.")
-        deleted = self.__find_deleted_files()
-        updated = self.__find_updated_files()
+            print("Your document is already up-to-date.")
+            return gummi.exit_code.ALREADY
+        added, updated, deleted = self.__find_changed_files()
+        if dry:
+            print("Will add:")
+            print(added)
+            print("Will update:")
+            print(updated)
+            print("Will delete:")
+            print(deleted)
+            return gummi.exit_code.SUCCESS
         self.repo.remotes.origin.pull()
         self.__delete_files(deleted)
         self.__update_files(updated)
-        self.add_files()
+        self.add_files(added)
         print("The document is now updated.")
         return gummi.exit_code.SUCCESS
 
-    def add_files(self):
-        path = self.files.get_template_folder()
-        new_files = list(pathlib.Path(path).rglob('*'))
+    def add_files(self, new_files=None):
+        if new_files:
+            new_files = map(self.files.absolute_path, new_files)
         if not new_files:
-            print(f"Warning: There is either no `{gummi.constants.TEMPLATE_FOLDER}` folder in the template or no files ar inisde it.")
-            return False
+            path = self.files.get_template_folder()
+            new_files = list(pathlib.Path(path).rglob('*'))
+            if not new_files:
+                print(f"Warning: There is either no `{gummi.constants.TEMPLATE_FOLDER}` folder in the template or no files ar inisde it.")
+                return False
         for file in new_files:
             if os.path.isdir(file):
                 continue
@@ -56,7 +67,10 @@ class Update():
     def __delete_files(self, files):
         for file in files:
             path, name = os.path.split(file)
-            os.remove(file)
+            try:
+                os.remove(file)
+            except OSError:
+                pass
             if not path == '':
                 try:
                     os.removedirs(path)
@@ -68,35 +82,24 @@ class Update():
             old, new = self.__get_old_and_new(file)
             shutil.copy(new, old)
 
-    def __find_updated_files(self):
+    def __find_changed_files(self):
         diff = self.check.git_diff()
-        updated = []
+        added, updated, deleted = [], [], []
         for diff_item in diff:
-            if diff_item.change_type == 'M':
-                path = diff_item.b_path
-                first_slash = path.find('/') + 1
-                updated_path = path[first_slash:]
-                old, new = self.__get_old_and_new(updated_path)
-                if self.__check_file_has_changed(old, new):
-                    print(f"{old} has changed locally and remotely. It will not be updated here.")
-                else:
-                    updated.append(updated_path)
-        return updated
-
-    def __find_deleted_files(self):
-        diff = self.check.git_diff()
-        deleted = []
-        for diff_item in diff:
-            if diff_item.change_type == 'D':
-                path = diff_item.b_path
-                first_slash = path.find('/') + 1
-                delete_path = path[first_slash:]
-                old, new = self.__get_old_and_new(delete_path)
-                if self.__check_file_has_changed(old, new):
-                    print(f"{old} has changed locally and deleted remotely. From now on, it is your responsibility to keep track of that file!")
-                else:
-                    deleted.append(delete_path)
-        return deleted
+            path = diff_item.b_path
+            first_slash = path.find('/') + 1
+            path = path[first_slash:]
+            old, new = self.__get_old_and_new(path)
+            if self.__check_file_has_changed(old, new):
+                print(f"{old} changed locally, so no modifications done.")
+            else:
+                if diff_item.change_type == 'A':
+                    added.append(path)
+                if diff_item.change_type == 'M':
+                    updated.append(path)
+                if diff_item.change_type == 'D':
+                    deleted.append(path)
+        return added, updated, deleted
 
     def __get_old_and_new(self, filename):
         old = filename

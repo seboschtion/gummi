@@ -47,6 +47,9 @@ class Files:
             path = '.'
         return path
 
+    def absolute_path(self, path):
+        return os.path.join(self.get_template_folder(), path)
+
     def get_repo_folder(self):
         all_files = os.listdir(gummi.constants.MANAGED_FOLDER)
         return os.path.join(gummi.constants.MANAGED_FOLDER, all_files[0])

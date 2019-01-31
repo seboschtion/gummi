@@ -10,15 +10,16 @@ class Program:
         global_parser.add_argument('-v', '--version', action='version', version=self.version(), help="show version information and exit")
         cmd_parser = global_parser.add_subparsers(title='commands', dest='cmd_parser_name', help="append -h to the command to obtain more usage information")
 
-        init_parser = cmd_parser.add_parser('init', description="initialize this document for {}".format(gummi.constants.PROGRAM_NAME))
+        init_parser = cmd_parser.add_parser('init', description="initialize this document for {gummi.constants.PROGRAM_NAME}")
         init_parser.add_argument('init', nargs='?', help=argparse.SUPPRESS)
         init_parser.add_argument('--template', action='store_true', help="initalize a template instead")
-        detach_parser = cmd_parser.add_parser('detach', description="remove {} configuration files".format(gummi.constants.PROGRAM_NAME))
+        detach_parser = cmd_parser.add_parser('detach', description=f"remove {gummi.constants.PROGRAM_NAME} configuration files")
         detach_parser.add_argument('detach', nargs='?', help=argparse.SUPPRESS)
         check_parser = cmd_parser.add_parser('check', description="check for available template updates")
         check_parser.add_argument('check', nargs='?', help=argparse.SUPPRESS)
         update_parser = cmd_parser.add_parser('update', description="update the template if necessary")
         update_parser.add_argument('update', nargs='?', help=argparse.SUPPRESS)
+        update_parser.add_argument('--dry', action='store_true', help="only print what would change, but do not do anything actually")
 
         args = global_parser.parse_args()
         doc_initialized = gummi.util.Files().is_initialized()
@@ -51,10 +52,10 @@ class Program:
 
     def update(self, parser):
         args = parser.parse_args()
-        return gummi.commands.Update().run()
+        return gummi.commands.Update().run(args.dry)
 
     def version(self):
-        return "{} version {}\nmore on https://github.com/latex-gummi/gummi".format(gummi.constants.PROGRAM_NAME, gummi.constants.PROGRAM_VERSION)
+        return f"{gummi.constants.PROGRAM_NAME} version {gummi.constants.PROGRAM_VERSION}\nmore on https://github.com/latex-gummi/gummi"
 
 if __name__ == '__main__':
     try:
