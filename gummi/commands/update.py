@@ -17,7 +17,7 @@ class Update():
         updates_available = self.check.check(quiet=True)
         if not updates_available:
             print("Your document is already up-to-date.")
-            return gummi.exit_code.ALREADY
+            return gummi.exit_code.SUCCESS
         added, updated, deleted = self.__find_changed_files()
         if dry:
             print("Will add:")
