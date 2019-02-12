@@ -14,6 +14,9 @@ class Files:
     def init_template(self):
         try:
             os.mkdir(gummi.constants.TEMPLATE_FOLDER)
+            gitignore = open('.gitignore', 'w')
+            gitignore.write(gummi.constants.MANAGED_FOLDER)
+            gitignore.close()
             return True
         except OSError:
             pass

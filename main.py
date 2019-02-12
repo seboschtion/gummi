@@ -55,7 +55,7 @@ class Program:
         return gummi.commands.Update().run(args.dry)
 
     def version(self):
-        return f"{gummi.constants.PROGRAM_NAME} version {gummi.constants.PROGRAM_VERSION}\nmore on https://github.com/latex-gummi/gummi"
+        return f"{gummi.constants.PROGRAM_NAME} version {gummi.constants.PROGRAM_VERSION}. See https://github.com/seboschtion/gummi for more information and releases."
 
 if __name__ == '__main__':
     try:
