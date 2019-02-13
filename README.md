@@ -7,7 +7,7 @@ With `gummi` you can do just that! You just create a git repository with your te
 ## Table of contents
 1. [Commands](#commands)
 2. [Example](#example): [Create template](#create-template), [Use template](#use-the-template), [Update template](#update-the-template)
-3. [Build](#build)
+3. [Build](#build-linux): [Linux](#build-linux), [Windows](#build-windows)
 
 ## Commands
 ```
@@ -16,7 +16,7 @@ check     Checks if any updates to the update are available
 detach    Deletes all the template files
 update    Updates the templates
 
-You can use -h on any command to get help.
+You can use -h on any command to get help for this particular command.
 ```
 
 ## Example
@@ -101,9 +101,23 @@ in your LaTeX document. Your changes are applied immediately! Any changes made l
 The _.gummi_ folder is important, it is responsible for tracking changes to your templates.
 
 ## Build
+### Build Linux
 1. After cloning the repository, `cd` into it
 2. Create the virtual environment: `python3 -m venv .`
 3. Run `source bin/activate`
 4. Run `pip install -r requirements.txt` to install the requirements
 5. Run `make`
-6. The binary can be found under `dist/gummi`. Move it where you want ;-)
+6. The binary can be found under `dist/gummi`.
+
+Move the binary to a place where your `$PATH` points to or extend the variable.
+
+### Build Windows
+Make sure you're using Python 3 upwards.
+1. After cloning the repository, `cd` into it
+2. Create the virtual environment: `python -m venv .`
+3. Run `.\Scripts\activate.bat`
+4. Run `pip install -r requirements.txt` to install the requirements
+5. Run `pyinstaller --workpath=build --clean --onefile --distpath=dist --name gummi main.py` (the command in the Makefile build section)
+6. The binary can be found under `dist/gummi.exe`.
+
+Move the binary to a place where your `$PATH` points to or extend the variable.
