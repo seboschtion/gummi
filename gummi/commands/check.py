@@ -14,7 +14,11 @@ class Check():
         return gummi.exit_code.SUCCESS
     
     def check(self, quiet):
-        fetch = self.repo.remotes.origin.fetch()[0]
+        try:
+            fetch = self.repo.remotes.origin.fetch()[0]
+        except git.exc.GitCommandError:
+            print("Could not connect to remote repository.")
+            return False
         diff = self.git_diff()
         if diff:
             if not quiet:
