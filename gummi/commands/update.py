@@ -7,6 +7,7 @@ import gummi
 import gummi.util
 import gummi.commands
 
+
 class Update():
     def __init__(self):
         self.files = gummi.util.Files()
@@ -34,16 +35,8 @@ class Update():
         print("The document is now updated.")
         return gummi.exit_code.SUCCESS
 
-    def add_files(self, new_files=None):
-        if new_files:
-            new_files = map(self.files.absolute_path, new_files)
-        if not new_files:
-            path = self.files.get_template_folder()
-            new_files = list(pathlib.Path(path).rglob('*'))
-            if not new_files:
-                print(f"Warning: There is either no `{gummi.constants.TEMPLATE_FOLDER}` folder in the template or no files ar inisde it.")
-                return False
-        for file in new_files:
+    def add_files(self, files):
+        for file in files:
             if os.path.isdir(file):
                 continue
             path, name = os.path.split(file)
@@ -59,9 +52,11 @@ class Update():
 
     def __check_file_has_changed(self, old, new):
         if not os.path.exists(old) or not os.path.exists(new):
-            return False 
-        oldsha1 = hashlib.sha1(open(old, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
-        newsha1 = hashlib.sha1(open(new, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
+            return False
+        oldsha1 = hashlib.sha1(
+            open(old, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
+        newsha1 = hashlib.sha1(
+            open(new, 'r', encoding='ISO-8859-1').read().encode('ISO-8859-1')).digest()
         return not oldsha1 == newsha1
 
     def __delete_files(self, files):
@@ -94,7 +89,7 @@ class Update():
                 print(f"{old} changed locally, so no modifications done.")
             else:
                 if diff_item.change_type == 'A':
-                    added.append(path)
+                    added.append(self.files.absolute_path(path))
                 if diff_item.change_type == 'M':
                     updated.append(path)
                 if diff_item.change_type == 'D':
@@ -105,4 +100,3 @@ class Update():
         old = filename
         new = os.path.join(self.files.get_template_folder(), filename)
         return old, new
-        

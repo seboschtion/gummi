@@ -4,6 +4,7 @@ import git
 
 import gummi
 
+
 class Files:
     def init_document(self):
         try:
@@ -24,7 +25,8 @@ class Files:
 
     def is_initialized(self):
         managed_folder_exists = os.path.isdir(gummi.constants.MANAGED_FOLDER)
-        if not managed_folder_exists: return False
+        if not managed_folder_exists:
+            return False
         repo_cloned = len(os.listdir(gummi.constants.MANAGED_FOLDER)) > 0
         return repo_cloned
 
@@ -57,3 +59,9 @@ class Files:
         all_files = os.listdir(gummi.constants.MANAGED_FOLDER)
         return os.path.join(gummi.constants.MANAGED_FOLDER, all_files[0])
 
+    def list_all_files(self, path):
+        all_files = []
+        for (directory, _, filenames) in os.walk(path):
+            for filename in filenames:
+                all_files.append(os.path.join(directory, filename))
+        return all_files

@@ -4,6 +4,7 @@ import rfc3987
 import gummi
 import gummi.util
 
+
 class Init():
     def __init__(self):
         self.files = gummi.util.Files()
@@ -15,16 +16,19 @@ class Init():
             print(f"Could not clone {source}.")
             self.files.delete_managed_folder()
             return gummi.exit_code.INVALID_SOURCE
-        gummi.commands.Update().add_files()
+        files = self.files.list_all_files(self.files.get_template_folder())
+        gummi.commands.Update().add_files(files)
         print("The document is now initialized, happy typing!")
         return gummi.exit_code.SUCCESS
 
     def init_template(self):
         if self.files.init_template():
-            print(f"Done. Add your shared files into the `{gummi.constants.TEMPLATE_FOLDER}` folder")
+            print(
+                f"Done. Add your shared files into the `{gummi.constants.TEMPLATE_FOLDER}` folder")
             return gummi.exit_code.SUCCESS
         else:
-            print(f"There was an error. Does the `{gummi.constants.TEMPLATE_FOLDER}` folder already exist?")
+            print(
+                f"There was an error. Does the `{gummi.constants.TEMPLATE_FOLDER}` folder already exist?")
             return gummi.exit_code.ALREADY
 
     def __ask_source(self):
@@ -37,9 +41,8 @@ class Init():
 
     def __clone_repo(self, source):
         try:
-            git.Git(gummi.constants.MANAGED_FOLDER).clone(source)
+            g = git.Git(gummi.constants.MANAGED_FOLDER).clone(source)
         except git.exc.GitError as e:
             print(e)
             return False
         return True
-
