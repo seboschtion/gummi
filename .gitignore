@@ -1,6 +1,7 @@
 *.swp
 
 bin/
+Scripts/
 
 pyvenv.cfg
 pip-selfcheck.json
