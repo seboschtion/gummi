@@ -1,8 +1,10 @@
-.PHONY: clean build
+.PHONY: clean upload
 
-build:
-	pyinstaller --workpath=build --clean --onefile --distpath=dist --name gummi main.py
+default: upload
 
 clean:
 	rm -rf dist build
 
+upload: clean
+	python3 setup.py bdist_wheel
+	python3 -m twine upload dist/*

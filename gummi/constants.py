@@ -1,6 +1,6 @@
 PROGRAM_NAME = 'gummi'
 BINARY_NAME = 'gummi'
-PROGRAM_VERSION = '1.2'
+PROGRAM_VERSION = '1.2.5'
 
 MANAGED_FOLDER = '.gummi'
 TEMPLATE_FOLDER = 'gummi'
