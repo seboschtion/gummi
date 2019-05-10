@@ -11,4 +11,3 @@ NOT_INITIALIZED = 105
 
 # Unknown
 UNKNOWN = 999
-

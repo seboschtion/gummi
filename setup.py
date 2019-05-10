@@ -27,7 +27,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            '%s=gummi.main:main' % gummi.constants.BINARY_NAME,
+            '%s = gummi.main:main' % gummi.constants.BINARY_NAME
         ]
     },
 )
