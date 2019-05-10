@@ -92,7 +92,7 @@ def update(parser):
 
 
 def version():
-    return f"{constants.PROGRAM_NAME} version {constants.PROGRAM_VERSION}. See https://github.com/seboschtion/gummi for more information and releases."
+    return f"{constants.PROGRAM_NAME} version {constants.PROGRAM_VERSION}. Visit https://github.com/seboschtion/gummi for code and https://pypi.org/project/gummi/ for releases."
 
 
 if __name__ == '__main__':

@@ -1,15 +1,15 @@
-import setuptools
+from setuptools import setup, find_packages
 import gummi.constants
 
-with open("README.md", "r") as rea:
-    long_description = rea.read()
+with open("README.md", "r") as readmetxt:
+    long_description = readmetxt.read()
 
-with open('requirements.txt', 'r') as req:
-    lines = req.readlines()
+with open('requirements.txt', 'r') as requirementstxt:
+    lines = requirementstxt.readlines()
     requirements = [l.strip().strip('\n')
                     for l in lines if l.strip() and not l.strip().startswith('#')]
 
-setuptools.setup(
+setup(
     name=gummi.constants.BINARY_NAME,
     version=gummi.constants.PROGRAM_VERSION,
     author="sebastian",
@@ -18,7 +18,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/seboschtion/gummi",
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     install_requires=requirements,
     classifiers=[
         "Programming Language :: Python :: 3",
