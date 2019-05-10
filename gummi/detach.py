@@ -1,5 +1,5 @@
 from shutil import rmtree
-import constants
+from . import constants
 
 
 def delete_managed():

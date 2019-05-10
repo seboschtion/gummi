@@ -2,9 +2,9 @@ from os import makedirs, path, remove, removedirs, listdir
 from shutil import copy
 from hashlib import sha1
 from git import exc
-from check import check, get_diff, get_repo
-import constants
-import exit_codes
+from .check import check, get_diff, get_repo
+from . import constants
+from . import exit_codes
 
 
 def add(files):

@@ -1,12 +1,12 @@
 import sys
 import argparse
 import os
-import exit_codes
-import constants
-from init import run_init, run_init_template
-from detach import run_detach
-from check import run_check
-from update import run_update
+from . import exit_codes
+from . import constants
+from .init import run_init, run_init_template
+from .detach import run_detach
+from .check import run_check
+from .update import run_update
 
 
 def main():

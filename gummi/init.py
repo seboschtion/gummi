@@ -2,10 +2,10 @@ from git import Repo, exc
 from rfc3987 import match
 from shutil import rmtree
 from os import mkdir, path, walk
-from update import add
-from detach import delete_managed
-import constants
-import exit_codes
+from .update import add
+from .detach import delete_managed
+from . import constants
+from . import exit_codes
 
 
 def ask_source():

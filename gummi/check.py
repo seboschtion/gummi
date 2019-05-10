@@ -1,6 +1,6 @@
 from git import Repo, exc
-import constants
-import exit_codes
+from . import constants
+from . import exit_codes
 
 
 def get_repo():

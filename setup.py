@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import gummi.constants
+from gummi import constants
 
 with open("README.md", "r") as readmetxt:
     long_description = readmetxt.read()
@@ -10,8 +10,8 @@ with open('requirements.txt', 'r') as requirementstxt:
                     for l in lines if l.strip() and not l.strip().startswith('#')]
 
 setup(
-    name=gummi.constants.BINARY_NAME,
-    version=gummi.constants.PROGRAM_VERSION,
+    name=constants.BINARY_NAME,
+    version=constants.PROGRAM_VERSION,
     author="sebastian",
     author_email="sebastian.hug@outlook.com",
     description="Manage your LaTeX templates with ease.",
@@ -27,7 +27,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            '%s = gummi.main:main' % gummi.constants.BINARY_NAME
+            '%s = gummi.main:main' % constants.BINARY_NAME
         ]
     },
 )
