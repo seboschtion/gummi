@@ -28,6 +28,9 @@ def add(files):
 def update(files):
     for file in files:
         local, original = get_local_and_original(file)
+        filepath, filename = path.split(file)
+        if len(filepath) > 0 and not path.exists(filepath):
+            makedirs(filepath, exist_ok=True)
         copy(original, local)
         print(f"U: {local}")
     return True
