@@ -97,7 +97,7 @@ def check(parser):
 
 def run(parser):
     args = parser.parse_args()
-    return run_script(args.script[0])
+    return run_script(args.script)
 
 
 def update(parser):
