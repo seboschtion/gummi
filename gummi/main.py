@@ -6,12 +6,13 @@ from . import constants
 from .init import run_init, run_init_template
 from .detach import run_detach
 from .check import run_check
+from .run import run_script
 from .update import run_update
 
 
 def main():
     global_parser = argparse.ArgumentParser(
-        prog=constants.BINARY_NAME, description=f"{constants.PROGRAM_NAME} - manage your LaTeX templates with ease")
+        prog=constants.BINARY_NAME, description=f"{constants.PROGRAM_NAME} -- Manage your LaTeX templates with ease.")
     global_parser.add_argument('-v', '--version', action='version',
                                version=version(), help="show version information and exit")
 
@@ -32,6 +33,12 @@ def main():
         'check', description="check for available template updates")
     check_parser.add_argument('check', nargs='?', help=argparse.SUPPRESS)
 
+    run_parser = cmd_parser.add_parser(
+        'run', description="run a script from the .scripts/ folder")
+    run_parser.add_argument('run', nargs='?', help=argparse.SUPPRESS)
+    run_parser.add_argument('script', metavar='script', nargs='+',
+                            help="the script from the .scripts/ folder without the .sh file extension")
+
     update_parser = cmd_parser.add_parser(
         'update', description="update the template if necessary")
     update_parser.add_argument('update', nargs='?', help=argparse.SUPPRESS)
@@ -47,6 +54,8 @@ def main():
             return detach(detach_parser)
         if args.cmd_parser_name == 'check':
             return check(check_parser)
+        if args.cmd_parser_name == 'run':
+            return run(run_parser)
         if args.cmd_parser_name == 'update':
             return update(update_parser)
         print(
@@ -84,6 +93,11 @@ def detach(parser):
 def check(parser):
     args = parser.parse_args()
     return run_check()
+
+
+def run(parser):
+    args = parser.parse_args()
+    return run_script(args.script[0])
 
 
 def update(parser):
