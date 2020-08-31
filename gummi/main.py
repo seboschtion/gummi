@@ -54,8 +54,6 @@ def main():
             return detach(detach_parser)
         if args.cmd_parser_name == 'check':
             return check(check_parser)
-        if args.cmd_parser_name == 'run':
-            return run(run_parser)
         if args.cmd_parser_name == 'update':
             return update(update_parser)
         print(
@@ -64,6 +62,8 @@ def main():
 
     if args.cmd_parser_name == 'init':
         return init(init_parser)
+    if args.cmd_parser_name == 'run':
+        return run(run_parser)
     print(
         f"{constants.PROGRAM_NAME} is not initialized for this document.")
     return exit_codes.NOT_INITIALIZED
