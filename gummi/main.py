@@ -48,17 +48,13 @@ def main():
         '--retry', action='store_true', help="retry to apply the last update")
 
     args = global_parser.parse_args()
-    doc_initialized = is_initialized()
-    if doc_initialized:
+    if is_initialized():
         if args.cmd_parser_name == 'detach':
             return detach(detach_parser)
         if args.cmd_parser_name == 'check':
             return check(check_parser)
         if args.cmd_parser_name == 'update':
             return update(update_parser)
-        print(
-            f"{constants.PROGRAM_NAME} already initialized for this document.")
-        return exit_codes.INITIALIZED
 
     if args.cmd_parser_name == 'init':
         return init(init_parser)
@@ -81,8 +77,12 @@ def init(parser):
     args = parser.parse_args()
     if args.template:
         return run_init_template()
-    else:
+    elif not is_initialized():
         return run_init()
+    else:
+        print(
+            f"{constants.PROGRAM_NAME} already initialized for this document.")
+        return exit_codes.INITIALIZED
 
 
 def detach(parser):
