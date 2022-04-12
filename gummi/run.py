@@ -1,6 +1,6 @@
 import stat
 from pathlib import Path
-from os import chmod
+from os import access, R_OK, X_OK
 from subprocess import call
 from . import exit_codes
 
@@ -11,7 +11,9 @@ def run_script(script):
     script[0] = scriptpath.absolute()
     if scriptpath.exists():
         try:
-            chmod(script[0], stat.S_IRUSR | stat.S_IXUSR)
+            if not access(script[0], R_OK | X_OK):
+                print(f"Trying to set permissions of {script[0]}")
+                scriptpath.chmod(scriptpath.stat().st_mode | stat.S_IRUSR | stat.S_IXUSR)
             return call(script)
         except:
             print(f"The {script[0]} is not executeable.")
