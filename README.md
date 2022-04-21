@@ -1,10 +1,10 @@
 # gummi
 
-Do you have a bunch of preamble files for your LaTeX documents and you reuse them all the time? What happens when you want to update these templates? You'll need to modify all the files in all your documents! Very time-consuming work, very boring, but thankfully, _very easy to automate_!
+Do you have a bunch of preamble files for your LaTeX documents and you reuse them all the time? What happens when you want to update these templates? You'll need to modify all the files in all your documents! Very time-consuming work, very boring, but thankfully, _very easy to automate!_
 
 With `gummi` you can do just that! You just create a git repository with your template files in it and you can use them in every LaTeX document you have!
 
-## Table of contents
+## Table of Contents
 
 1. [Install](#install)
 2. [Commands](#commands)
@@ -51,7 +51,7 @@ A LaTeX document of yours might usually look like this:
 
 Typically only the `main.tex` and `sections` change, the rest should be consistent over all your documents. Here is where `gummi` commes into play!
 
-### Create templates
+### Create Templates
 
 First, create an empty folder and open a terminal window in it. Then run
 
@@ -75,7 +75,7 @@ Basically, not much happended but a _gummi_ folder was created. Now, put all you
 
 Push that stuff to the git service you prefer.
 
-### Use the template
+### Use the Template
 
 Now, visit your LaTeX document folder and again, open a terminal inside it. The structure of your document looks probably like this:
 
@@ -112,7 +112,7 @@ When asked for the git repository, enter the HTTPS clone URL of the repository a
 |      - footer.tex
 ```
 
-### Update the template
+### Update the Template
 
 If your want to update your templates, for example remove the Makefile and add another one, do just that in your template repository and push the changes to the remote git server. Then, simply run
 
